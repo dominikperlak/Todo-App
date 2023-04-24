@@ -1,5 +1,5 @@
 export const editItem = async (itemId, newValue) => {
-  await fetch(`https://api.todoist.com/rest/v1/tasks/${itemId}`, {
+  await fetch(`https://api.todoist.com/rest/v2/tasks/${itemId}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
