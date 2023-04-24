@@ -1,46 +1,62 @@
-import React, { useState } from "react";
-import List from "./List";
+import React, { useState, useEffect } from "react";
+import { fetchItems } from './api/list';
+import { addItem } from './api/add';
+import { editItem } from './api/edit';
+import { removeItem } from './api/remove';
 
-const App = () => {
-  const [list, setList] = useState([]);
-  const [addItemText, setAddItemText] = useState("");
+function App() {
+  const [items, setItems] = useState([]);
+  const [inputValue, setInputValue] = useState('');
 
-  const addItem = (item) => {
-    if (item.trim() !== "") {
-      setList([...list, item]);
-    }
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetchItems();
+      setItems(result);
+    };
+    fetchData();
+  }, []);
+
+  const handleAddItem = async (newItem) => {
+    const newItemId = await addItem(newItem);
+    setItems([...items, { content: newItem, id: newItemId }]);
+    setInputValue('');
   };
 
-  const editItem = (index, newValue) => {
-    const newList = [...list];
-    newList[index] = newValue;
-    setList(newList);
+  const handleEditItem = async (itemId, newValue) => {
+    await editItem(itemId, newValue);
+    const updatedItems = items.map((item) => {
+      if (item.id === itemId) {
+        item.content = newValue;
+      }
+      return item;
+    });
+    setItems(updatedItems);
   };
 
-  const removeItem = (index) => {
-    const newList = [...list];
-    newList.splice(index, 1);
-    setList(newList);
-  };
-
-  const handleAddItemChange = (e) => {
-    setAddItemText(e.target.value);
+  const handleRemoveItem = async (itemId) => {
+    await removeItem(itemId);
+    const updatedItems = items.filter((item) => item.id !== itemId);
+    setItems(updatedItems);
   };
 
   return (
-    <div>
-      <h1>ToDo List</h1>
-      <List list={list} editItem={editItem} removeItem={removeItem} />
-      <div>
-        <input
-          type="text"
-          value={addItemText}
-          onChange={handleAddItemChange}
-        />
-        <button onClick={() => addItem(addItemText)}>Add</button>
-      </div>
+    <div className="App">
+      <h1>Todo List</h1>
+      <form onSubmit={(e) => e.preventDefault()}>
+        <input type="text" placeholder="Add item" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+        <button type="submit" onClick={() => handleAddItem(inputValue)}>Add</button>
+      </form>
+      <ul>
+        {items.map((item) => (
+          <li key={item.id}>
+            {item.content}
+            <button onClick={() => handleEditItem(item.id, prompt("Enter new value:"))}>Edit</button>
+            <button onClick={() => handleRemoveItem(item.id)}>Remove</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
-};
+}
 
 export default App;

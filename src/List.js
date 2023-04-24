@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 
-function List({ list, editItem, removeItem }) {
+function List({ items, onEditItem, onRemoveItem }) {
   const [editedIndex, setEditedIndex] = useState(-1);
   const [editedItemText, setEditedItemText] = useState("");
 
   const handleEdit = (index) => {
     setEditedIndex(index);
-    setEditedItemText(list[index]);
+    setEditedItemText(items[index].content);
   };
 
   const handleSave = (index) => {
-    editItem(index, editedItemText);
+    onEditItem(items[index].id, editedItemText);
     setEditedIndex(-1);
     setEditedItemText("");
   };
@@ -28,8 +28,8 @@ function List({ list, editItem, removeItem }) {
 
   return (
     <ul>
-      {list.map((item, index) => (
-        <li key={index}>
+      {items.map((item, index) => (
+        <li key={item.id}>
           {editedIndex === index ? (
             <div>
               <input
@@ -43,11 +43,11 @@ function List({ list, editItem, removeItem }) {
             </div>
           ) : (
             <div>
-              {item}
+              {item.content}
               <button onClick={() => handleEdit(index)}>Edit</button>
             </div>
           )}
-          <button onClick={() => removeItem(index)}>Remove</button>
+          <button onClick={() => onRemoveItem(item.id)}>Remove</button>
         </li>
       ))}
     </ul>
