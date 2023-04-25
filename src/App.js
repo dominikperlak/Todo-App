@@ -3,10 +3,13 @@ import { fetchItems } from './api/list';
 import { addItem } from './api/add';
 import { editItem } from './api/edit';
 import { removeItem } from './api/remove';
+import './App.css'; 
 
 function App() {
   const [items, setItems] = useState([]);
   const [inputValue, setInputValue] = useState('');
+  const [editingItemId, setEditingItemId] = useState(null);
+  const [editingItemValue, setEditingItemValue] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,12 +34,21 @@ function App() {
       return item;
     });
     setItems(updatedItems);
+    setEditingItemId(null);
   };
 
   const handleRemoveItem = async (itemId) => {
     await removeItem(itemId);
     const updatedItems = items.filter((item) => item.id !== itemId);
     setItems(updatedItems);
+  };
+
+  const handleEditingItemChange = (e) => {
+    setEditingItemValue(e.target.value);
+  };
+
+  const handleEditingItemSave = () => {
+    handleEditItem(editingItemId, editingItemValue);
   };
 
   return (
@@ -49,9 +61,21 @@ function App() {
       <ul>
         {items.map((item) => (
           <li key={item.id}>
-            {item.content}
-            <button onClick={() => handleEditItem(item.id, prompt("Enter new value:"))}>Edit</button>
-            <button onClick={() => handleRemoveItem(item.id)}>Remove</button>
+            {editingItemId === item.id ? (
+              <>
+                <input type="text" value={editingItemValue} onChange={handleEditingItemChange} />
+                <button onClick={handleEditingItemSave}>Save</button>
+              </>
+            ) : (
+              <>
+                {item.content}
+                <button onClick={() => {
+                  setEditingItemId(item.id);
+                  setEditingItemValue(item.content);
+                }}>Edit</button>
+                <button onClick={() => handleRemoveItem(item.id)}>Remove</button>
+              </>
+            )}
           </li>
         ))}
       </ul>

@@ -1,53 +1,39 @@
 import React, { useState } from "react";
 
-function List({ items, onEditItem, onRemoveItem }) {
-  const [editedIndex, setEditedIndex] = useState(-1);
-  const [editedItemText, setEditedItemText] = useState("");
+function List({ items, handleEditItem, handleRemoveItem }) {
+  const [editValues, setEditValues] = useState({});
 
-  const handleEdit = (index) => {
-    setEditedIndex(index);
-    setEditedItemText(items[index].content);
+  const handleEditChange = (e, id) => {
+    setEditValues({ ...editValues, [id]: e.target.value });
   };
 
-  const handleSave = (index) => {
-    onEditItem(items[index].id, editedItemText);
-    setEditedIndex(-1);
-    setEditedItemText("");
-  };
-
-  const handleCancel = () => {
-    setEditedIndex(-1);
-    setEditedItemText("");
-  };
-
-  const handleKeyPress = (e, index) => {
-    if (e.key === "Enter") {
-      handleSave(index);
-    }
+  const handleEditSubmit = (id) => {
+    handleEditItem(id, editValues[id]);
+    setEditValues({ ...editValues, [id]: "" });
   };
 
   return (
     <ul>
-      {items.map((item, index) => (
+      {items.map((item) => (
         <li key={item.id}>
-          {editedIndex === index ? (
-            <div>
+          {editValues[item.id] !== undefined ? (
+            <>
               <input
                 type="text"
-                value={editedItemText}
-                onChange={(e) => setEditedItemText(e.target.value)}
-                onKeyPress={(e) => handleKeyPress(e, index)}
+                value={editValues[item.id]}
+                onChange={(e) => handleEditChange(e, item.id)}
               />
-              <button onClick={() => handleSave(index)}>Save</button>
-              <button onClick={() => handleCancel()}>Cancel</button>
-            </div>
+              <button onClick={() => handleEditSubmit(item.id)}>Save</button>
+            </>
           ) : (
-            <div>
+            <>
               {item.content}
-              <button onClick={() => handleEdit(index)}>Edit</button>
-            </div>
+              <button onClick={() => setEditValues({ ...editValues, [item.id]: item.content })}>
+                Edit
+              </button>
+              <button onClick={() => handleRemoveItem(item.id)}>Remove</button>
+            </>
           )}
-          <button onClick={() => onRemoveItem(item.id)}>Remove</button>
         </li>
       ))}
     </ul>
