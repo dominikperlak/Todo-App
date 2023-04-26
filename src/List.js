@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { EditOutlined, DeleteOutlined, SaveOutlined } from "@ant-design/icons";
+import { Input, Button } from "antd";
 
 function List({ items, handleEditItem, handleRemoveItem }) {
   const [editValues, setEditValues] = useState({});
@@ -18,20 +20,38 @@ function List({ items, handleEditItem, handleRemoveItem }) {
         <li key={item.id}>
           {editValues[item.id] !== undefined ? (
             <>
-              <input
-                type="text"
+              <Input
                 value={editValues[item.id]}
                 onChange={(e) => handleEditChange(e, item.id)}
               />
-              <button onClick={() => handleEditSubmit(item.id)}>Save</button>
+              <Button
+                type="primary"
+                icon={<SaveOutlined />}
+                onClick={() => handleEditSubmit(item.id)}
+              >
+                Save
+              </Button>
             </>
           ) : (
             <>
               {item.content}
-              <button onClick={() => setEditValues({ ...editValues, [item.id]: item.content })}>
+              <Button
+                type="text"
+                icon={<EditOutlined />}
+                onClick={() =>
+                  setEditValues({ ...editValues, [item.id]: item.content })
+                }
+              >
                 Edit
-              </button>
-              <button onClick={() => handleRemoveItem(item.id)}>Remove</button>
+              </Button>
+              <Button
+                type="text"
+                danger
+                icon={<DeleteOutlined />}
+                onClick={() => handleRemoveItem(item.id)}
+              >
+                Remove
+              </Button>
             </>
           )}
         </li>
