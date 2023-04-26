@@ -34,7 +34,7 @@ function List({ items, handleEditItem, handleRemoveItem }) {
             </>
           ) : (
             <>
-              {item.content}
+              <span>{item.content}</span>
               <Button
                 type="text"
                 icon={<EditOutlined />}

@@ -16,14 +16,15 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const result = await fetchItems();
-      setItems(result);
-      setLoading(false);
-    };
     fetchData();
   }, []);
+
+  const fetchData = async () => {
+    setLoading(true);
+    const result = await fetchItems();
+    setItems(result);
+    setLoading(false);
+  };
 
   const handleAddItem = async (newItem) => {
     if (newItem) {
@@ -120,11 +121,11 @@ function App() {
               <div>{item.content}</div>
             )}
           </List.Item>
-          )}
-          />
-        
-      </div>
-);
+        )}
+      />
+    </div>
+  );
+  
+  
 }
-
 export default App;
