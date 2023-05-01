@@ -1,9 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { fetchItems } from "./api/list";
-import { addItem } from "./api/add";
-import { editItem } from "./api/edit";
-import { removeItem } from "./api/remove";
-import { Input, Button, List, Space, Spin } from "antd";
+import React, { useState } from "react";
+import { Input, Button, List, Space } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import "antd/dist/antd";
 import "./App.css";
@@ -13,32 +9,16 @@ function App() {
   const [inputValue, setInputValue] = useState("");
   const [editingItemId, setEditingItemId] = useState(null);
   const [editingItemValue, setEditingItemValue] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    setLoading(true);
-    const result = await fetchItems();
-    setItems(result);
-    setLoading(false);
-  };
-
-  const handleAddItem = async (newItem) => {
+  const handleAddItem = (newItem) => {
     if (newItem) {
-      setLoading(true);
-      const newItemId = await addItem(newItem);
+      const newItemId = Date.now();
       setItems([...items, { content: newItem, id: newItemId }]);
       setInputValue("");
-      setLoading(false);
     }
   };
 
-  const handleEditItem = async (itemId, newValue) => {
-    setLoading(true);
-    await editItem(itemId, newValue);
+  const handleEditItem = (itemId, newValue) => {
     const updatedItems = items.map((item) => {
       if (item.id === itemId) {
         item.content = newValue;
@@ -47,15 +27,11 @@ function App() {
     });
     setItems(updatedItems);
     setEditingItemId(null);
-    setLoading(false);
   };
 
-  const handleRemoveItem = async (itemId) => {
-    setLoading(true);
-    await removeItem(itemId);
+  const handleRemoveItem = (itemId) => {
     const updatedItems = items.filter((item) => item.id !== itemId);
     setItems(updatedItems);
-    setLoading(false);
   };
 
   const handleEditingItemChange = (e) => {
@@ -83,12 +59,10 @@ function App() {
         >
           Add
         </Button>
-        {loading && <Spin />}
       </Space>
       <List
         className="list"
         dataSource={items}
-        loading={loading}
         renderItem={(item) => (
           <List.Item
             key={item.id}
@@ -113,9 +87,7 @@ function App() {
                   value={editingItemValue}
                   onChange={handleEditingItemChange}
                 />
-                <Button onClick={handleEditingItemSave} loading={loading}>
-                  Save
-                </Button>
+                <Button onClick={handleEditingItemSave}>Save</Button>
               </Space>
             ) : (
               <div>{item.content}</div>
@@ -125,7 +97,6 @@ function App() {
       />
     </div>
   );
-  
-  
 }
+
 export default App;
