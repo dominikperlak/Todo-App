@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Button, List, Space } from "antd";
+import { Input, Button, List, Space, message } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import "antd/dist/antd";
 import "./App.css";
@@ -15,18 +15,24 @@ function App() {
       const newItemId = Date.now();
       setItems([...items, { content: newItem, id: newItemId }]);
       setInputValue("");
+    } else {
+      message.error("Please enter an item!");
     }
   };
 
   const handleEditItem = (itemId, newValue) => {
-    const updatedItems = items.map((item) => {
-      if (item.id === itemId) {
-        item.content = newValue;
-      }
-      return item;
-    });
-    setItems(updatedItems);
-    setEditingItemId(null);
+    if (newValue) {
+      const updatedItems = items.map((item) => {
+        if (item.id === itemId) {
+          item.content = newValue;
+        }
+        return item;
+      });
+      setItems(updatedItems);
+      setEditingItemId(null);
+    } else {
+      message.error("Please enter a value!");
+    }
   };
 
   const handleRemoveItem = (itemId) => {

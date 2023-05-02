@@ -1,63 +1,43 @@
-import React, { useState } from "react";
-import { EditOutlined, DeleteOutlined, SaveOutlined } from "@ant-design/icons";
-import { Input, Button } from "antd";
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import App from './App';
 
-function List({ items, handleEditItem, handleRemoveItem }) {
-  const [editValues, setEditValues] = useState({});
+describe('App component', () => {
+  test('renders Todo List header', () => {
+    render(<App />);
+    const header = screen.getByText('Todo List');
+    expect(header).toBeInTheDocument();
+  });
 
-  const handleEditChange = (e, id) => {
-    setEditValues({ ...editValues, [id]: e.target.value });
-  };
+  test('adds a new item to the list', () => {
+    render(<App />);
+    const input = screen.getByPlaceholderText('Add item');
+    fireEvent.change(input, { target: { value: 'New item' } });
+    const addButton = screen.getByRole('button', { name: 'Add' });
+    fireEvent.click(addButton);
+    const newItem = screen.getByText('New item');
+    expect(newItem).toBeInTheDocument();
+  });
 
-  const handleEditSubmit = (id) => {
-    handleEditItem(id, editValues[id]);
-    setEditValues({ ...editValues, [id]: "" });
-  };
+  test('edits an item in the list', () => {
+    render(<App />);
+    const item = screen.getByText('Item 1');
+    const editButton = item.nextSibling.nextSibling.firstChild;
+    fireEvent.click(editButton);
+    const editInput = screen.getByDisplayValue('Item 1');
+    fireEvent.change(editInput, { target: { value: 'Updated item' } });
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+    fireEvent.click(saveButton);
+    const updatedItem = screen.getByText('Updated item');
+    expect(updatedItem).toBeInTheDocument();
+  });
 
-  return (
-    <ul>
-      {items.map((item) => (
-        <li key={item.id}>
-          {editValues[item.id] !== undefined ? (
-            <>
-              <Input
-                value={editValues[item.id]}
-                onChange={(e) => handleEditChange(e, item.id)}
-              />
-              <Button
-                type="primary"
-                icon={<SaveOutlined />}
-                onClick={() => handleEditSubmit(item.id)}
-              >
-                Save
-              </Button>
-            </>
-          ) : (
-            <>
-              <span>{item.content}</span>
-              <Button
-                type="text"
-                icon={<EditOutlined />}
-                onClick={() =>
-                  setEditValues({ ...editValues, [item.id]: item.content })
-                }
-              >
-                Edit
-              </Button>
-              <Button
-                type="text"
-                danger
-                icon={<DeleteOutlined />}
-                onClick={() => handleRemoveItem(item.id)}
-              >
-                Remove
-              </Button>
-            </>
-          )}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-export default List;
+  test('removes an item from the list', () => {
+    render(<App />);
+    const item = screen.getByText('Item 1');
+    const removeButton = item.nextSibling.nextSibling.nextSibling.firstChild;
+    fireEvent.click(removeButton);
+    const remainingItem = screen.queryByText('Item 1');
+    expect(remainingItem).not.toBeInTheDocument();
+  });
+});
