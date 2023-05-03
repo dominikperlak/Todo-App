@@ -11,7 +11,7 @@ function App() {
   const [editingItemValue, setEditingItemValue] = useState("");
 
   const handleAddItem = (newItem) => {
-    if (newItem) {
+    if (newItem.trim()) {
       const newItemId = Date.now();
       setItems([...items, { content: newItem, id: newItemId }]);
       setInputValue("");
@@ -21,7 +21,7 @@ function App() {
   };
 
   const handleEditItem = (itemId, newValue) => {
-    if (newValue) {
+    if (newValue.trim()) {
       const updatedItems = items.map((item) => {
         if (item.id === itemId) {
           item.content = newValue;
@@ -56,12 +56,14 @@ function App() {
           placeholder="Add item"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
+          data-testid="add-input"
         />
         <Button
           type="primary"
           onClick={() => handleAddItem(inputValue)}
           icon={<PlusOutlined />}
-          disabled={!inputValue}
+          data-testid="add-button"
+          disabled={!inputValue.trim()}
         >
           Add
         </Button>
@@ -73,33 +75,43 @@ function App() {
           <List.Item
             key={item.id}
             actions={[
-              <a
+              <Button
                 key="edit"
                 onClick={() => {
                   setEditingItemId(item.id);
                   setEditingItemValue(item.content);
                 }}
+                data-testid={`edit-button-${item.id}`}
               >
                 <EditOutlined />
-              </a>,
-              <a key="delete" onClick={() => handleRemoveItem(item.id)}>
+              </Button>,
+              <Button
+                key="delete"
+                onClick={() => handleRemoveItem(item.id)}
+                data-testid={`delete-button-${item.id}`}
+              >
                 <DeleteOutlined />
-              </a>,
+              </Button>,
             ]}
+            data-testid={`list-item-${item.id}`}
           >
             {editingItemId === item.id ? (
               <Space>
                 <Input
                   value={editingItemValue}
                   onChange={handleEditingItemChange}
+                  data-testid="edit-input"
                 />
-                <Button onClick={handleEditingItemSave}>Save</Button>
+                <Button onClick={handleEditingItemSave} data-testid="save-button">
+                  Save
+                </Button>
               </Space>
             ) : (
-              <div>{item.content}</div>
+              <div data-testid={`list-item-content-${item.id}`}>{item.content}</div>
             )}
           </List.Item>
         )}
+        data-testid="item-list"
       />
     </div>
   );
