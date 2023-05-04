@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen, fireEvent} from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import App from './App';
 
@@ -45,7 +44,26 @@ describe('App component', () => {
     expect(editedItem).toBeInTheDocument();
   });
   
+  test('removes an item from the list', async () => {
+    render(<App />);
+    
+    const addItemInput = screen.getByTestId('add-input');
+    const addButton = screen.getByTestId('add-button');
+    
+    fireEvent.change(addItemInput, { target: { value: 'Item to remove' } });
+    fireEvent.click(addButton);
+    
+    const deleteButton = await screen.findByTestId(/delete-button/i);
+    fireEvent.click(deleteButton);
+    
+    const deletedItem = screen.queryByText(/Item to remove/i);
+    expect(deletedItem).not.toBeInTheDocument();
+  });
   
+  
+
+
+
   
 });
 
