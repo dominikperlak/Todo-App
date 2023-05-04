@@ -4,6 +4,8 @@ import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import "antd/dist/antd";
 import "./App.css";
 
+
+
 function App() {
   const [items, setItems] = useState([]);
   const [inputValue, setInputValue] = useState("");
@@ -69,14 +71,15 @@ function App() {
         </Button>
       </Space>
       <List
-  className="list"
-  dataSource={items}
-  renderItem={(item) => (
-    <List.Item
-      key={item.id}
-      actions={[
-        <Button
+        className="list"
+        dataSource={items}
+        renderItem={(item) => (
+          <List.Item
+            key={item.id}
+            actions={[
+<Button
   key="edit"
+  className="edit-button"
   onClick={() => {
     setEditingItemId(item.id);
     setEditingItemValue(item.content);
@@ -85,37 +88,39 @@ function App() {
   type="text"
 >
   <EditOutlined />
-</Button>,
-        <Button
-          key="delete"
-          onClick={() => handleRemoveItem(item.id)}
-          data-testid={`delete-button-${item.id}`}
-        >
-          <DeleteOutlined />
-        </Button>,
-      ]}
-      data-testid={`list-item-${item.id}`}
-    >
-      {editingItemId === item.id ? (
-        <Space>
-          <Input
-            value={editingItemValue}
-            onChange={handleEditingItemChange}
-            data-testid={`edit-input-${item.id}`}
-          />
-          <Button onClick={handleEditingItemSave} data-testid={`save-button-${item.id}`}>
-            Save
-          </Button>
-        </Space>
-      ) : (
-        <div data-testid={`list-item-content-${item.id}`}>{item.content}</div>
-      )}
-    </List.Item>
-  )}
+</Button>
+,
 
-  data-testid="item-list"
-/>
 
+              <Button
+                key="delete"
+                onClick={() => handleRemoveItem(item.id)}
+                data-testid={`delete-button-${item.id}`}
+                className="delete-button"
+              >
+                <DeleteOutlined />
+              </Button>,
+            ]}
+            data-testid={`list-item-${item.id}`}
+          >
+            {editingItemId === item.id ? (
+              <Space>
+                <Input
+                  value={editingItemValue}
+                  onChange={handleEditingItemChange}
+                  data-testid={`edit-input-${item.id}`}
+                />
+                <Button onClick={handleEditingItemSave} data-testid={`save-button-${item.id}`}>
+                  Save
+                </Button>
+              </Space>
+            ) : (
+              <div data-testid={`list-item-content-${item.id}`}>{item.content}</div>
+            )}
+          </List.Item>
+        )}
+        data-testid="item-list"
+      />
     </div>
   );
 }

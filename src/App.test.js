@@ -1,8 +1,9 @@
 import React from 'react';
-import { render, screen, fireEvent } from "@testing-library/react";
-
+import { render, screen, fireEvent} from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import App from './App';
+
 
 describe('App component', () => {
   test('renders Todo List header', () => {
@@ -19,21 +20,37 @@ describe('App component', () => {
     fireEvent.click(addButton);
     const newItem = screen.getByText('New item');
     expect(newItem).toBeInTheDocument();
+    
   });
 
-
-
+  test('edits and save item in the list', async () => {
+    render(<App />);
   
-
+    const addItemInput = screen.getByTestId('add-input');
+    const addButton = screen.getByTestId('add-button');
   
+    fireEvent.change(addItemInput, { target: { value: 'New item' } });
+    fireEvent.click(addButton);
   
+    const editButton = await screen.findByTestId(/edit-button/i);
+    fireEvent.click(editButton);
   
+    const editInput = await screen.findByTestId(/edit-input/i);
+    fireEvent.change(editInput, { target: { value: 'Edited item' } });
   
+    const saveButton = await screen.findByTestId(/save-button/i);
+    fireEvent.click(saveButton);
+  
+    const editedItem = await screen.findByText(/Edited item/i);
+    expect(editedItem).toBeInTheDocument();
+  });
   
   
   
 });
+
   
+
   
   
   
