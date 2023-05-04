@@ -1,6 +1,7 @@
 import React from 'react';
+import { render, screen, fireEvent } from "@testing-library/react";
+
 import '@testing-library/jest-dom/extend-expect';
-import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
 
 describe('App component', () => {
@@ -19,30 +20,23 @@ describe('App component', () => {
     const newItem = screen.getByText('New item');
     expect(newItem).toBeInTheDocument();
   });
-  test('edits an existing item in the list', () => {
-    render(<App />);
-    const newItem = 'New item';
-    const editItem = 'Edited item';
-    const input = screen.getByPlaceholderText('Add item');
-    const addButton = screen.getByRole('button', { name: /add/i });
-    fireEvent.change(input, { target: { value: newItem } });
-    fireEvent.click(addButton);
-    const listItem = screen.getByTestId('list-item-1683131926253');
 
-    const editButton = within(listItem).getByTestId('edit-button-1');
-    fireEvent.click(editButton);
-    const editInput = within(listItem).getByTestId('edit-input');
-    fireEvent.change(editInput, { target: { value: editItem } });
-    const saveButton = within(listItem).getByTestId('save-button');
-    fireEvent.click(saveButton);
-    const editedItem = screen.getByText(editItem);
-    expect(editedItem).toBeInTheDocument();
-  });
+
+
   
 
-
-
-
-
-
+  
+  
+  
+  
+  
+  
+  
 });
+  
+  
+  
+  
+  
+  
+

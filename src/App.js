@@ -69,50 +69,53 @@ function App() {
         </Button>
       </Space>
       <List
-        className="list"
-        dataSource={items}
-        renderItem={(item) => (
-          <List.Item
-            key={item.id}
-            actions={[
-              <Button
-                key="edit"
-                onClick={() => {
-                  setEditingItemId(item.id);
-                  setEditingItemValue(item.content);
-                }}
-                data-testid={`edit-button-${item.id}`}
-              >
-                <EditOutlined />
-              </Button>,
-              <Button
-                key="delete"
-                onClick={() => handleRemoveItem(item.id)}
-                data-testid={`delete-button-${item.id}`}
-              >
-                <DeleteOutlined />
-              </Button>,
-            ]}
-            data-testid={`list-item-${item.id}`}
-          >
-            {editingItemId === item.id ? (
-              <Space>
-                <Input
-                  value={editingItemValue}
-                  onChange={handleEditingItemChange}
-                  data-testid="edit-input"
-                />
-                <Button onClick={handleEditingItemSave} data-testid="save-button">
-                  Save
-                </Button>
-              </Space>
-            ) : (
-              <div data-testid={`list-item-content-${item.id}`}>{item.content}</div>
-            )}
-          </List.Item>
-        )}
-        data-testid="item-list"
-      />
+  className="list"
+  dataSource={items}
+  renderItem={(item) => (
+    <List.Item
+      key={item.id}
+      actions={[
+        <Button
+  key="edit"
+  onClick={() => {
+    setEditingItemId(item.id);
+    setEditingItemValue(item.content);
+  }}
+  data-testid={`edit-button-${item.id}`}
+  type="text"
+>
+  <EditOutlined />
+</Button>,
+        <Button
+          key="delete"
+          onClick={() => handleRemoveItem(item.id)}
+          data-testid={`delete-button-${item.id}`}
+        >
+          <DeleteOutlined />
+        </Button>,
+      ]}
+      data-testid={`list-item-${item.id}`}
+    >
+      {editingItemId === item.id ? (
+        <Space>
+          <Input
+            value={editingItemValue}
+            onChange={handleEditingItemChange}
+            data-testid={`edit-input-${item.id}`}
+          />
+          <Button onClick={handleEditingItemSave} data-testid={`save-button-${item.id}`}>
+            Save
+          </Button>
+        </Space>
+      ) : (
+        <div data-testid={`list-item-content-${item.id}`}>{item.content}</div>
+      )}
+    </List.Item>
+  )}
+
+  data-testid="item-list"
+/>
+
     </div>
   );
 }
