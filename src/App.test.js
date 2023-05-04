@@ -61,10 +61,6 @@ describe('App component', () => {
   });
   
   
-
-
-
-  
 });
 
   
