@@ -89,38 +89,28 @@ function App() {
 >
   <EditOutlined />
 </Button>
-,
-
-
-              <Button
-                key="delete"
-                onClick={() => handleRemoveItem(item.id)}
-                data-testid={`delete-button-${item.id}`}
-                className="delete-button"
-              >
-                <DeleteOutlined />
-              </Button>,
-            ]}
-            data-testid={`list-item-${item.id}`}
-          >
-            {editingItemId === item.id ? (
-              <Space>
-                <Input
-                  value={editingItemValue}
-                  onChange={handleEditingItemChange}
-                  data-testid={`edit-input-${item.id}`}
-                />
-                <Button onClick={handleEditingItemSave} data-testid={`save-button-${item.id}`}>
-                  Save
-                </Button>
-              </Space>
-            ) : (
-              <div data-testid={`list-item-content-${item.id}`}>{item.content}</div>
-            )}
-          </List.Item>
-        )}
-        data-testid="item-list"
-      />
+,<Button key="delete"onClick={() => handleRemoveItem(item.id)}
+  data-testid={`delete-button-${item.id}`}
+  className="delete-button">
+  <DeleteOutlined />
+  </Button>,
+  ]}
+  data-testid={`list-item-${item.id}`}>
+  {editingItemId === item.id ? (
+  <Space>
+  <Input
+  value={editingItemValue}
+  onChange={handleEditingItemChange}
+  data-testid={`edit-input-${item.id}`}/>
+<Button onClick={handleEditingItemSave} data-testid={`save-button-${item.id}`}>
+Save
+</Button>
+</Space>
+) : (
+<div data-testid={`list-item-content-${item.id}`}>{item.content}</div>
+)}</List.Item>
+)}
+data-testid="item-list"/>
     </div>
   );
 }
