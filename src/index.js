@@ -1,7 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import 'antd/dist/antd';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import "antd/dist/antd";
 
 
 ReactDOM.render(
@@ -10,5 +10,5 @@ ReactDOM.render(
    
     
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );

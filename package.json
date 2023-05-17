@@ -17,12 +17,15 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "lint": "eslint . --color && echo \"ESLint: Configuration has been completed succesfully \"",
     "start": "react-scripts start",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+    
+
   },
   "eslintConfig": {
     "extends": [
@@ -45,6 +48,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
+    "eslint": "^8.40.0",
     "match-media-mock": "^0.1.1",
     "user-event": "^4.0.0"
   }
