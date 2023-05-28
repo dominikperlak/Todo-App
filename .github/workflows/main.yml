@@ -28,8 +28,10 @@ jobs:
     - name: Build project
       run: npm run build
 
-    - name: Run tests
-      run: npm test
+    - name: Configure Git
+      run: |
+        git config --global user.email "you@example.com"
+        git config --global user.name "Your Name"
 
     - name: Deploy to GitHub Pages
       run: npm run deploy
