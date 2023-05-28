@@ -33,7 +33,6 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/react": "^14.0.0",
     "eslint": "^8.40.0",
     "match-media-mock": "^0.1.1",
     "user-event": "^4.0.0"
