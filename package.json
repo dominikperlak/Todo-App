@@ -33,7 +33,6 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "eslint": "^8.40.0",
     "match-media-mock": "^0.1.1",
