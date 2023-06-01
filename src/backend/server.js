@@ -1,6 +1,6 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const cors = require('cors');
+const cors = require("cors");
 
 app.use(express.json());
 app.use(cors());
@@ -9,7 +9,7 @@ app.use(cors());
 let todoList = [];
 
 
-app.post('/api/lists', (req, res) => {
+app.post("/api/lists", (req, res) => {
   const newItem = req.body;
   newItem._id = Date.now();
   todoList.push(newItem);
@@ -17,7 +17,7 @@ app.post('/api/lists', (req, res) => {
 });
 
 
-app.put('/api/lists/:id', (req, res) => {
+app.put("/api/lists/:id", (req, res) => {
   const itemId = parseInt(req.params.id);
   const newValue = req.body.content;
 
@@ -26,11 +26,11 @@ app.put('/api/lists/:id', (req, res) => {
     itemToUpdate.content = newValue;
     res.json(itemToUpdate);
   } else {
-    res.status(404).json({ error: 'Item not found' });
+    res.status(404).json({ error: "Item not found" });
   }
 });
 
-app.delete('/api/lists/:id', (req, res) => {
+app.delete("/api/lists/:id", (req, res) => {
   const itemId = parseInt(req.params.id);
 
   const initialLength = todoList.length;
@@ -39,11 +39,11 @@ app.delete('/api/lists/:id', (req, res) => {
   if (todoList.length < initialLength) {
     res.json({ success: true });
   } else {
-    res.status(404).json({ error: 'Item not found' });
+    res.status(404).json({ error: "Item not found" });
   }
 });
 
-app.get('/api/lists', (req, res) => {
+app.get("/api/lists", (req, res) => {
   res.json(todoList);
 });
 
